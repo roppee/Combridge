@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ComBridge</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=DM+Sans:wght@300;400;500&display=swap');
+
+  :root {
+    --bg: #f0f4f8;
+    --surface: #ffffff;
+    --surface2: #e8eef5;
+    --primary: #1a5276;
+    --primary-light: #2e86c1;
+    --accent: #148f77;
+    --accent-light: #1abc9c;
+    --text: #1a2332;
+    --text-muted: #5d7185;
+    --border: #ccd9e3;
+    --easy-bg: #eafaf1;
+    --easy-border: #a9dfbf;
+    --shadow: 0 2px 12px rgba(26,82,118,0.10);
+    --radius: 14px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  header {
+    background: var(--primary);
+    color: white;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+
+  header .icon { font-size: 1.6rem; }
+  header h1 { font-size: 1.1rem; font-weight: 500; letter-spacing: 0.03em; }
+  header .sub { font-size: 0.75rem; opacity: 0.75; margin-left: auto; }
+
+  .container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    padding: 16px;
+    flex: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  @media (max-width: 700px) {
+    .container { grid-template-columns: 1fr; }
+  }
+
+  .panel {
+    background: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .panel-header {
+    padding: 14px 18px 10px;
+    border-bottom: 1.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .panel-header .label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .panel-header .badge {
+    font-size: 0.7rem;
+    background: var(--primary);
+    color: white;
+    border-radius: 20px;
+    padding: 2px 9px;
+    margin-left: auto;
+  }
+
+  .panel-header .badge.green {
+    background: var(--accent);
+  }
+
+  /* 職員パネル */
+  .staff-panel .panel-header { background: #eaf2fb; }
+  .staff-panel .panel-header .icon { color: var(--primary-light); font-size: 1.1rem; }
+
+  .input-area {
+    padding: 14px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .tab-row {
+    display: flex;
+    gap: 6px;
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 8px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface2);
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    font-family: 'Noto Sans JP', sans-serif;
+    cursor: pointer;
+    transition: all 0.18s;
+    font-weight: 500;
+  }
+
+  .tab-btn.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+  }
+
+  textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    resize: vertical;
+    min-height: 110px;
+    background: var(--surface);
+    color: var(--text);
+    transition: border-color 0.18s;
+  }
+
+  textarea:focus { outline: none; border-color: var(--primary-light); }
+  textarea::placeholder { color: #aab8c5; }
+
+  .voice-area {
+    display: none;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .voice-area.active { display: flex; }
+  .text-area-wrap.hidden { display: none; }
+
+  .voice-btn {
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    background: var(--primary);
+    color: white;
+    font-size: 0.95rem;
+    font-family: 'Noto Sans JP', sans-serif;
+    cursor: pointer;
+    transition: all 0.18s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-weight: 500;
+  }
+
+  .voice-btn:hover { background: var(--primary-light); }
+  .voice-btn.recording { background: #c0392b; animation: pulse 1.2s infinite; }
+
+  @keyframes pulse {
+    0%,100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+
+  .voice-transcript {
+    padding: 10px 12px;
+    background: var(--surface2);
+    border-radius: 8px;
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    min-height: 40px;
+    line-height: 1.6;
+  }
+
+  .send-btn {
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    background: var(--accent);
+    color: white;
+    font-size: 0.95rem;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.18s;
+    letter-spacing: 0.04em;
+  }
+
+  .send-btn:hover { background: var(--accent-light); }
+  .send-btn:disabled { background: var(--border); color: var(--text-muted); cursor: not-allowed; }
+
+  /* 利用者パネル */
+  .user-panel .panel-header { background: #eafaf1; }
+  .user-panel .panel-header .icon { color: var(--accent); font-size: 1.1rem; }
+
+  .result-area {
+    padding: 16px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    overflow-y: auto;
+  }
+
+  .result-empty {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    gap: 10px;
+    padding: 40px 20px;
+    text-align: center;
+  }
+
+  .result-empty .big-icon { font-size: 3rem; opacity: 0.3; }
+  .result-empty p { font-size: 0.85rem; line-height: 1.7; }
+
+  .result-block {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    animation: fadeIn 0.35s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .original-box {
+    background: var(--surface2);
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    border-left: 3px solid var(--border);
+  }
+
+  .original-box .label-small {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: #8fa8be;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+  }
+
+  .easy-box {
+    background: var(--easy-bg);
+    border: 1.5px solid var(--easy-border);
+    border-radius: 12px;
+    padding: 16px;
+  }
+
+  .easy-box .label-small {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+  .easy-text {
+    font-size: 1.15rem;
+    line-height: 1.85;
+    color: var(--text);
+    font-weight: 400;
+  }
+
+  .confirm-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .confirm-label {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    flex: 1;
+  }
+
+  .btn-ok {
+    padding: 8px 18px;
+    border: none;
+    border-radius: 8px;
+    background: var(--accent);
+    color: white;
+    font-size: 0.85rem;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.18s;
+  }
+
+  .btn-ok:hover { background: var(--accent-light); }
+
+  .btn-retry {
+    padding: 8px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    background: white;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    font-family: 'Noto Sans JP', sans-serif;
+    cursor: pointer;
+    transition: all 0.18s;
+  }
+
+  .btn-retry:hover { border-color: var(--primary-light); color: var(--primary); }
+
+  /* 確認済みマーク */
+  .confirmed-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.78rem;
+    color: var(--accent);
+    font-weight: 700;
+    padding: 4px 10px;
+    background: var(--easy-bg);
+    border-radius: 20px;
+    border: 1px solid var(--easy-border);
+  }
+
+  /* ローディング */
+  .loading-dots {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    padding: 8px 0;
+  }
+
+  .loading-dots span {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: dot 1.2s infinite;
+  }
+
+  .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+  .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes dot {
+    0%,80%,100% { opacity: 0.2; transform: scale(0.8); }
+    40% { opacity: 1; transform: scale(1); }
+  }
+
+  /* APIキー設定 */
+  .apikey-bar {
+    background: #fff8e1;
+    border-bottom: 1.5px solid #ffe082;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.82rem;
+    color: #7d6608;
+  }
+
+  .apikey-input {
+    flex: 1;
+    padding: 6px 10px;
+    border: 1.5px solid #ffe082;
+    border-radius: 7px;
+    font-size: 0.82rem;
+    font-family: monospace;
+    background: white;
+    max-width: 340px;
+  }
+
+  .apikey-save {
+    padding: 6px 14px;
+    border: none;
+    border-radius: 7px;
+    background: #f39c12;
+    color: white;
+    font-size: 0.8rem;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .history-panel {
+    background: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 14px 16px;
+    grid-column: 1 / -1;
+  }
+
+  .history-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+  }
+
+  .history-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+  }
+
+  .history-chip {
+    padding: 5px 12px;
+    border-radius: 20px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+
+  .history-chip:hover {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <span class="icon">🤝</span>
+  <h1>ComBridge</h1>
+  <span class="sub">行政窓口プロトタイプ v0.1</span>
+</header>
+
+<!-- APIキー設定バー -->
+<div class="apikey-bar" id="apikeyBar">
+  <span>⚙️ Claude APIキー：</span>
+  <input class="apikey-input" type="password" id="apikeyInput" placeholder="sk-ant-..." />
+  <button class="apikey-save" onclick="saveApiKey()">保存</button>
+  <span id="apikeyStatus"></span>
+</div>
+
+<div class="container">
+
+  <!-- 職員パネル -->
+  <div class="panel staff-panel">
+    <div class="panel-header">
+      <span class="icon">👩‍💼</span>
+      <span class="label">職員</span>
+      <span class="badge">入力</span>
+    </div>
+    <div class="input-area">
+      <div class="tab-row">
+        <button class="tab-btn active" onclick="switchTab('text')">⌨️ テキスト入力</button>
+        <button class="tab-btn" onclick="switchTab('voice')">🎤 音声入力</button>
+      </div>
+
+      <!-- テキスト入力 -->
+      <div class="text-area-wrap" id="textAreaWrap">
+        <textarea id="inputText" placeholder="例：国民健康保険の更新手続きのご案内です。毎年7月末までに申請が必要です。"></textarea>
+      </div>
+
+      <!-- 音声入力 -->
+      <div class="voice-area" id="voiceArea">
+        <button class="voice-btn" id="voiceBtn" onclick="toggleVoice()">
+          <span id="voiceBtnIcon">🎤</span>
+          <span id="voiceBtnText">マイクを押して話す</span>
+        </button>
+        <div class="voice-transcript" id="voiceTranscript">ここに音声が表示されます</div>
+      </div>
+
+      <!-- サンプル -->
+      <div class="history-panel" style="padding:10px 12px; grid-column:auto; box-shadow:none; background:var(--surface2); border-radius:10px;">
+        <div class="history-title">📋 よく使う文例</div>
+        <div class="history-list" id="sampleList"></div>
+      </div>
+
+      <button class="send-btn" id="sendBtn" onclick="sendToAI()">やさしい言葉に変換して表示 →</button>
+    </div>
+  </div>
+
+  <!-- 利用者パネル -->
+  <div class="panel user-panel">
+    <div class="panel-header">
+      <span class="icon">👤</span>
+      <span class="label">利用者</span>
+      <span class="badge green">表示</span>
+    </div>
+    <div class="result-area" id="resultArea">
+      <div class="result-empty" id="emptyState">
+        <div class="big-icon">💬</div>
+        <p>職員が入力した内容が<br>やさしい言葉で表示されます</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ---- APIキー管理 ----
+let apiKey = localStorage.getItem('madoguchi_apikey') || '';
+if (apiKey) {
+  document.getElementById('apikeyInput').value = apiKey;
+  document.getElementById('apikeyStatus').textContent = '✅ 設定済み';
+}
+
+function saveApiKey() {
+  apiKey = document.getElementById('apikeyInput').value.trim();
+  localStorage.setItem('madoguchi_apikey', apiKey);
+  document.getElementById('apikeyStatus').textContent = '✅ 保存しました';
+  setTimeout(() => document.getElementById('apikeyStatus').textContent = '', 2000);
+}
+
+// ---- タブ切替 ----
+function switchTab(mode) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  if (mode === 'text') {
+    document.getElementById('textAreaWrap').classList.remove('hidden');
+    document.getElementById('voiceArea').classList.remove('active');
+  } else {
+    document.getElementById('textAreaWrap').classList.add('hidden');
+    document.getElementById('voiceArea').classList.add('active');
+  }
+}
+
+// ---- 音声入力 ----
+let recognition = null;
+let isRecording = false;
+
+function toggleVoice() {
+  if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+    alert('このブラウザは音声入力に対応していません。Chromeをお使いください。');
+    return;
+  }
+  if (isRecording) {
+    recognition.stop();
+    return;
+  }
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  recognition = new SpeechRecognition();
+  recognition.lang = 'ja-JP';
+  recognition.continuous = false;
+  recognition.interimResults = true;
+
+  recognition.onstart = () => {
+    isRecording = true;
+    document.getElementById('voiceBtn').classList.add('recording');
+    document.getElementById('voiceBtnIcon').textContent = '⏹';
+    document.getElementById('voiceBtnText').textContent = '録音中... タップして停止';
+    document.getElementById('voiceTranscript').textContent = '聞き取り中...';
+  };
+
+  recognition.onresult = (e) => {
+    let transcript = '';
+    for (let i = e.resultIndex; i < e.results.length; i++) {
+      transcript += e.results[i][0].transcript;
+    }
+    document.getElementById('voiceTranscript').textContent = transcript;
+    if (e.results[e.results.length - 1].isFinal) {
+      document.getElementById('inputText').value = transcript;
+    }
+  };
+
+  recognition.onend = () => {
+    isRecording = false;
+    document.getElementById('voiceBtn').classList.remove('recording');
+    document.getElementById('voiceBtnIcon').textContent = '🎤';
+    document.getElementById('voiceBtnText').textContent = 'マイクを押して話す';
+  };
+
+  recognition.start();
+}
+
+// ---- サンプル文例 ----
+const samples = [
+  '国民健康保険の更新手続きのご案内です。',
+  '障害者手帳の等級変更申請が必要です。',
+  '介護認定の更新期限が近づいています。',
+  '住民票の写しの交付申請について説明します。',
+  '特別障害者手当の受給資格を確認します。',
+  '自立支援医療費の支給認定申請のご案内です。',
+];
+
+const sampleList = document.getElementById('sampleList');
+samples.forEach(s => {
+  const chip = document.createElement('button');
+  chip.className = 'history-chip';
+  chip.textContent = s.length > 18 ? s.slice(0, 18) + '…' : s;
+  chip.title = s;
+  chip.onclick = () => {
+    document.getElementById('inputText').value = s;
+    // テキストタブに切り替え
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-btn')[0].classList.add('active');
+    document.getElementById('textAreaWrap').classList.remove('hidden');
+    document.getElementById('voiceArea').classList.remove('active');
+  };
+  sampleList.appendChild(chip);
+});
+
+// ---- AI変換 ----
+async function sendToAI() {
+  const text = document.getElementById('inputText').value.trim()
+    || document.getElementById('voiceTranscript').textContent.trim();
+
+  if (!text || text === 'ここに音声が表示されます' || text === '聞き取り中...') {
+    alert('テキストを入力してください');
+    return;
+  }
+  if (!apiKey) {
+    alert('APIキーを設定してください');
+    return;
+  }
+
+  const sendBtn = document.getElementById('sendBtn');
+  sendBtn.disabled = true;
+  sendBtn.textContent = '変換中...';
+
+  // 空状態を消す
+  document.getElementById('emptyState').style.display = 'none';
+
+  // ローディング表示
+  const loadingEl = document.createElement('div');
+  loadingEl.className = 'loading-dots';
+  loadingEl.innerHTML = '<span></span><span></span><span></span>';
+  document.getElementById('resultArea').appendChild(loadingEl);
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: `あなたは行政窓口で聴覚障害者・聾唖者の方へ情報を伝えるサポートをするアシスタントです。
+職員が話した内容を、以下のルールでやさしい日本語に変換してください。
+
+ルール：
+・専門用語や難しい言葉はわかりやすい言葉に置き換える
+・短い文に分ける（1文は40字以内が目安）
+・重要な数字・日付・期限は必ず残す
+・「です・ます」調で丁寧に
+・箇条書きが適切な場合は使う
+・絵文字を適度に使い、視覚的にわかりやすくする
+
+出力形式：やさしい言葉のみを出力してください。説明や前置きは不要です。`,
+        messages: [{ role: 'user', content: text }]
+      })
+    });
+
+    const data = await response.json();
+    loadingEl.remove();
+
+    if (data.error) throw new Error(data.error.message);
+
+    const easyText = data.content[0].text;
+    renderResult(text, easyText);
+
+  } catch (err) {
+    loadingEl.remove();
+    const errEl = document.createElement('div');
+    errEl.style.cssText = 'color:#c0392b;font-size:0.85rem;padding:10px;background:#fdf2f2;border-radius:8px;';
+    errEl.textContent = 'エラー: ' + err.message;
+    document.getElementById('resultArea').appendChild(errEl);
+  }
+
+  sendBtn.disabled = false;
+  sendBtn.textContent = 'やさしい言葉に変換して表示 →';
+}
+
+function renderResult(original, easy) {
+  const resultArea = document.getElementById('resultArea');
+  const block = document.createElement('div');
+  block.className = 'result-block';
+  block.innerHTML = `
+    <div class="original-box">
+      <div class="label-small">職員の言葉</div>
+      ${escapeHtml(original)}
+    </div>
+    <div class="easy-box">
+      <div class="label-small">✨ やさしい言葉</div>
+      <div class="easy-text">${formatText(easy)}</div>
+    </div>
+    <div class="confirm-row">
+      <span class="confirm-label">内容は伝わりましたか？</span>
+      <button class="btn-retry" onclick="markRetry(this)">🔄 もう一度</button>
+      <button class="btn-ok" onclick="markOk(this)">✅ わかった</button>
+    </div>
+  `;
+  resultArea.appendChild(block);
+  block.scrollIntoView({ behavior: 'smooth', block: 'end' });
+}
+
+function markOk(btn) {
+  const row = btn.closest('.confirm-row');
+  row.innerHTML = '<span class="confirmed-badge">✅ 確認しました</span>';
+}
+
+function markRetry(btn) {
+  const block = btn.closest('.result-block');
+  block.style.opacity = '0.4';
+  // 職員側にフォーカス
+  document.getElementById('inputText').focus();
+  document.getElementById('inputText').select();
+}
+
+function formatText(text) {
+  return escapeHtml(text).replace(/\n/g, '<br>');
+}
+
+function escapeHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+</script>
+</body>
+</html>
