@@ -35,33 +35,48 @@
     flex-direction: column;
   }
 
+  .icon-svg {
+    display: inline-block;
+    vertical-align: middle;
+    flex-shrink: 0;
+  }
+
   header {
-    background: var(--primary);
-    color: white;
+    background: #a8c5a0;
+    color: var(--text);
     padding: 14px 24px;
     display: flex;
     align-items: center;
     gap: 12px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    transition: background 0.3s;
   }
 
-  header .icon { font-size: 1.6rem; }
+  header.user-mode { background: #f5e6a3; }
   header h1 { font-size: 1.1rem; font-weight: 500; letter-spacing: 0.03em; }
-  header .sub { font-size: 0.75rem; opacity: 0.75; margin-left: auto; }
+
+  .mode-label {
+    margin-left: auto;
+    font-size: 0.85rem;
+    font-weight: 700;
+    background: rgba(255,255,255,0.55);
+    padding: 3px 11px;
+    border-radius: 20px;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
 
   .container {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 16px;
     padding: 16px;
     flex: 1;
-    max-width: 1100px;
+    max-width: 480px;
     margin: 0 auto;
     width: 100%;
-  }
-
-  @media (max-width: 700px) {
-    .container { grid-template-columns: 1fr; }
   }
 
   .panel {
@@ -72,6 +87,8 @@
     display: flex;
     flex-direction: column;
   }
+
+  .panel.hidden { display: none; }
 
   .panel-header {
     padding: 14px 18px 10px;
@@ -98,13 +115,37 @@
     margin-left: auto;
   }
 
-  .panel-header .badge.green {
-    background: var(--accent);
+  .panel-header .badge.green { background: var(--accent); }
+
+  .staff-panel .panel-header { background: #eaf2fb; }
+  .staff-panel .panel-header .icon { color: var(--primary-light); }
+
+  .user-panel .panel-header { background: #eafaf1; }
+  .user-panel .panel-header .icon { color: var(--accent); }
+
+  .question-notice {
+    background: #f0f4f8;
+    border-left: 3px solid var(--primary-light);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 0.88rem;
+    color: var(--text);
+    line-height: 1.6;
+    display: none;
   }
 
-  /* 職員パネル */
-  .staff-panel .panel-header { background: #eaf2fb; }
-  .staff-panel .panel-header .icon { color: var(--primary-light); font-size: 1.1rem; }
+  .question-notice.visible { display: block; }
+
+  .question-notice .notice-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--primary-light);
+    margin-bottom: 4px;
+    letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
 
   .input-area {
     padding: 14px;
@@ -114,10 +155,7 @@
     gap: 10px;
   }
 
-  .tab-row {
-    display: flex;
-    gap: 6px;
-  }
+  .tab-row { display: flex; gap: 6px; }
 
   .tab-btn {
     flex: 1;
@@ -131,13 +169,13 @@
     cursor: pointer;
     transition: all 0.18s;
     font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
   }
 
-  .tab-btn.active {
-    background: var(--primary);
-    color: white;
-    border-color: var(--primary);
-  }
+  .tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
 
   textarea {
     width: 100%;
@@ -157,12 +195,7 @@
   textarea:focus { outline: none; border-color: var(--primary-light); }
   textarea::placeholder { color: #aab8c5; }
 
-  .voice-area {
-    display: none;
-    flex-direction: column;
-    gap: 8px;
-  }
-
+  .voice-area { display: none; flex-direction: column; gap: 8px; }
   .voice-area.active { display: flex; }
   .text-area-wrap.hidden { display: none; }
 
@@ -218,10 +251,6 @@
   .send-btn:hover { background: var(--accent-light); }
   .send-btn:disabled { background: var(--border); color: var(--text-muted); cursor: not-allowed; }
 
-  /* 利用者パネル */
-  .user-panel .panel-header { background: #eafaf1; }
-  .user-panel .panel-header .icon { color: var(--accent); font-size: 1.1rem; }
-
   .result-area {
     padding: 16px;
     flex: 1;
@@ -243,7 +272,7 @@
     text-align: center;
   }
 
-  .result-empty .big-icon { font-size: 3rem; opacity: 0.3; }
+  .result-empty .big-icon { opacity: 0.3; }
   .result-empty p { font-size: 0.85rem; line-height: 1.7; }
 
   .result-block {
@@ -267,14 +296,18 @@
     border-left: 3px solid var(--border);
   }
 
-  .original-box .label-small {
+  .label-small {
     font-size: 0.7rem;
     font-weight: 700;
     letter-spacing: 0.08em;
-    color: #8fa8be;
-    margin-bottom: 4px;
     text-transform: uppercase;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
   }
+
+  .original-box .label-small { color: #8fa8be; }
 
   .easy-box {
     background: var(--easy-bg);
@@ -283,14 +316,7 @@
     padding: 16px;
   }
 
-  .easy-box .label-small {
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    color: var(--accent);
-    margin-bottom: 8px;
-    text-transform: uppercase;
-  }
+  .easy-box .label-small { color: var(--accent); margin-bottom: 8px; }
 
   .easy-text {
     font-size: 1.15rem;
@@ -299,17 +325,9 @@
     font-weight: 400;
   }
 
-  .confirm-row {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-  }
+  .confirm-row { display: flex; gap: 8px; align-items: center; }
 
-  .confirm-label {
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    flex: 1;
-  }
+  .confirm-label { font-size: 0.8rem; color: var(--text-muted); flex: 1; }
 
   .btn-ok {
     padding: 8px 18px;
@@ -322,6 +340,9 @@
     font-weight: 700;
     cursor: pointer;
     transition: all 0.18s;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
   }
 
   .btn-ok:hover { background: var(--accent-light); }
@@ -336,11 +357,13 @@
     font-family: 'Noto Sans JP', sans-serif;
     cursor: pointer;
     transition: all 0.18s;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
   }
 
   .btn-retry:hover { border-color: var(--primary-light); color: var(--primary); }
 
-  /* 確認済みマーク */
   .confirmed-badge {
     display: inline-flex;
     align-items: center;
@@ -354,13 +377,46 @@
     border: 1px solid var(--easy-border);
   }
 
-  /* ローディング */
-  .loading-dots {
-    display: flex;
-    gap: 5px;
-    align-items: center;
-    padding: 8px 0;
+  .question-area {
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    padding: 14px;
+    border-top: 1.5px solid var(--border);
+    background: var(--surface2);
+    animation: fadeIn 0.3s ease;
   }
+
+  .question-area.visible { display: flex; }
+
+  .question-area .question-label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .question-area textarea { min-height: 80px; font-size: 1rem; }
+
+  .question-send-btn {
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    background: var(--primary);
+    color: white;
+    font-size: 0.95rem;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.18s;
+    letter-spacing: 0.04em;
+  }
+
+  .question-send-btn:hover { background: var(--primary-light); }
+
+  .loading-dots { display: flex; gap: 5px; align-items: center; padding: 8px 0; }
 
   .loading-dots span {
     width: 7px; height: 7px;
@@ -377,7 +433,6 @@
     40% { opacity: 1; transform: scale(1); }
   }
 
-  /* APIキー設定 */
   .apikey-bar {
     background: #fff8e1;
     border-bottom: 1.5px solid #ffe082;
@@ -427,13 +482,12 @@
     text-transform: uppercase;
     color: var(--text-muted);
     margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
   }
 
-  .history-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 7px;
-  }
+  .history-list { display: flex; flex-wrap: wrap; gap: 7px; }
 
   .history-chip {
     padding: 5px 12px;
@@ -447,24 +501,32 @@
     white-space: nowrap;
   }
 
-  .history-chip:hover {
-    background: var(--primary);
-    color: white;
-    border-color: var(--primary);
-  }
+  .history-chip:hover { background: var(--primary); color: white; border-color: var(--primary); }
 </style>
 </head>
 <body>
 
-<header>
-  <span class="icon">🤝</span>
+<header id="header">
+  <span class="icon">
+    <svg class="icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+    </svg>
+  </span>
   <h1>ComBridge</h1>
-  <span class="sub">行政窓口プロトタイプ v0.1</span>
+  <span class="mode-label" id="modeLabel">
+    <svg class="icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="8" r="4"/>
+    </svg>
+    職員モード
+  </span>
 </header>
 
-<!-- APIキー設定バー -->
 <div class="apikey-bar" id="apikeyBar">
-  <span>⚙️ Claude APIキー：</span>
+  <svg class="icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7d6608" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
+    <circle cx="12" cy="12" r="3"/>
+  </svg>
+  <span>Claude APIキー：</span>
   <input class="apikey-input" type="password" id="apikeyInput" placeholder="sk-ant-..." />
   <button class="apikey-save" onclick="saveApiKey()">保存</button>
   <span id="apikeyStatus"></span>
@@ -473,35 +535,71 @@
 <div class="container">
 
   <!-- 職員パネル -->
-  <div class="panel staff-panel">
+  <div class="panel staff-panel" id="staffPanel">
     <div class="panel-header">
-      <span class="icon">👩‍💼</span>
+      <span class="icon">
+        <svg class="icon-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="8" r="4"/>
+        </svg>
+      </span>
       <span class="label">職員</span>
       <span class="badge">入力</span>
     </div>
     <div class="input-area">
-      <div class="tab-row">
-        <button class="tab-btn active" onclick="switchTab('text')">⌨️ テキスト入力</button>
-        <button class="tab-btn" onclick="switchTab('voice')">🎤 音声入力</button>
+
+      <div class="question-notice" id="questionNotice">
+        <div class="notice-label">
+          <svg class="icon-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+          利用者からの質問
+        </div>
+        <div id="questionNoticeText"></div>
       </div>
 
-      <!-- テキスト入力 -->
+      <div class="tab-row">
+        <button class="tab-btn active" onclick="switchTab('text', this)">
+          <svg class="icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="6" width="20" height="13" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M8 14h8"/>
+          </svg>
+          テキスト入力
+        </button>
+        <button class="tab-btn" onclick="switchTab('voice', this)">
+          <svg class="icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+            <line x1="12" y1="19" x2="12" y2="22"/>
+          </svg>
+          音声入力
+        </button>
+      </div>
+
       <div class="text-area-wrap" id="textAreaWrap">
         <textarea id="inputText" placeholder="例：国民健康保険の更新手続きのご案内です。毎年7月末までに申請が必要です。"></textarea>
       </div>
 
-      <!-- 音声入力 -->
       <div class="voice-area" id="voiceArea">
         <button class="voice-btn" id="voiceBtn" onclick="toggleVoice()">
-          <span id="voiceBtnIcon">🎤</span>
+          <span id="voiceBtnIcon">
+            <svg class="icon-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/>
+              <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+              <line x1="12" y1="19" x2="12" y2="22"/>
+            </svg>
+          </span>
           <span id="voiceBtnText">マイクを押して話す</span>
         </button>
         <div class="voice-transcript" id="voiceTranscript">ここに音声が表示されます</div>
       </div>
 
-      <!-- サンプル -->
-      <div class="history-panel" style="padding:10px 12px; grid-column:auto; box-shadow:none; background:var(--surface2); border-radius:10px;">
-        <div class="history-title">📋 よく使う文例</div>
+      <div class="history-panel" style="padding:10px 12px;grid-column:auto;box-shadow:none;background:var(--surface2);border-radius:10px;">
+        <div class="history-title">
+          <svg class="icon-svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+            <rect x="8" y="2" width="8" height="4" rx="1" ry="1"/>
+          </svg>
+          よく使う文例
+        </div>
         <div class="history-list" id="sampleList"></div>
       </div>
 
@@ -510,41 +608,95 @@
   </div>
 
   <!-- 利用者パネル -->
-  <div class="panel user-panel">
+  <div class="panel user-panel hidden" id="userPanel">
     <div class="panel-header">
-      <span class="icon">👤</span>
+      <span class="icon">
+        <svg class="icon-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <circle cx="12" cy="10" r="3"/>
+          <path d="M7 20.662V19a5 5 0 0 1 10 0v1.662"/>
+        </svg>
+      </span>
       <span class="label">利用者</span>
       <span class="badge green">表示</span>
     </div>
     <div class="result-area" id="resultArea">
       <div class="result-empty" id="emptyState">
-        <div class="big-icon">💬</div>
+        <div class="big-icon">
+          <svg class="icon-svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+        </div>
         <p>職員が入力した内容が<br>やさしい言葉で表示されます</p>
       </div>
+    </div>
+    <div class="question-area" id="questionArea">
+      <div class="question-label">
+        <svg class="icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
+        質問があれば入力してください
+      </div>
+      <textarea id="questionText" placeholder="例：手続きはどこでできますか？"></textarea>
+      <button class="question-send-btn" onclick="submitQuestion()">質問する →</button>
     </div>
   </div>
 
 </div>
 
 <script>
+// ---- SVGアイコン関数（JSから動的に使用） ----
+const IC = {
+  mic:     (s=20) => `<svg class="icon-svg" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>`,
+  stop:    (s=20) => `<svg class="icon-svg" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" fill="currentColor" stroke="currentColor"/></svg>`,
+  user:    (s=16) => `<svg class="icon-svg" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="8" r="4"/></svg>`,
+  userCir: (s=16) => `<svg class="icon-svg" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="10" r="3"/><path d="M7 20.662V19a5 5 0 0 1 10 0v1.662"/></svg>`,
+  check:   (s=16) => `<svg class="icon-svg" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></svg>`,
+  refresh: (s=16) => `<svg class="icon-svg" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>`,
+  star:    (s=14) => `<svg class="icon-svg" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
+};
+
 // ---- APIキー管理 ----
 let apiKey = localStorage.getItem('madoguchi_apikey') || '';
 if (apiKey) {
   document.getElementById('apikeyInput').value = apiKey;
-  document.getElementById('apikeyStatus').textContent = '✅ 設定済み';
+  document.getElementById('apikeyStatus').innerHTML = IC.check(14) + ' 設定済み';
 }
 
 function saveApiKey() {
   apiKey = document.getElementById('apikeyInput').value.trim();
   localStorage.setItem('madoguchi_apikey', apiKey);
-  document.getElementById('apikeyStatus').textContent = '✅ 保存しました';
-  setTimeout(() => document.getElementById('apikeyStatus').textContent = '', 2000);
+  document.getElementById('apikeyStatus').innerHTML = IC.check(14) + ' 保存しました';
+  setTimeout(() => document.getElementById('apikeyStatus').innerHTML = '', 2000);
+}
+
+// ---- モード切替 ----
+function switchToUserMode() {
+  document.getElementById('header').classList.add('user-mode');
+  document.getElementById('modeLabel').innerHTML = IC.userCir(16) + ' 利用者モード';
+  document.getElementById('staffPanel').classList.add('hidden');
+  document.getElementById('userPanel').classList.remove('hidden');
+}
+
+function switchToStaffMode(question) {
+  document.getElementById('header').classList.remove('user-mode');
+  document.getElementById('modeLabel').innerHTML = IC.user(16) + ' 職員モード';
+  document.getElementById('userPanel').classList.add('hidden');
+  document.getElementById('staffPanel').classList.remove('hidden');
+  document.getElementById('questionArea').classList.remove('visible');
+  document.getElementById('questionText').value = '';
+  if (question) {
+    document.getElementById('questionNoticeText').textContent = question;
+    document.getElementById('questionNotice').classList.add('visible');
+  }
+  document.getElementById('inputText').value = '';
+  document.getElementById('inputText').focus();
 }
 
 // ---- タブ切替 ----
-function switchTab(mode) {
+function switchTab(mode, btn) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  event.target.classList.add('active');
+  btn.classList.add('active');
   if (mode === 'text') {
     document.getElementById('textAreaWrap').classList.remove('hidden');
     document.getElementById('voiceArea').classList.remove('active');
@@ -563,12 +715,10 @@ function toggleVoice() {
     alert('このブラウザは音声入力に対応していません。Chromeをお使いください。');
     return;
   }
-  if (isRecording) {
-    recognition.stop();
-    return;
-  }
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  recognition = new SpeechRecognition();
+  if (isRecording) { recognition.stop(); return; }
+
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  recognition = new SR();
   recognition.lang = 'ja-JP';
   recognition.continuous = false;
   recognition.interimResults = true;
@@ -576,26 +726,22 @@ function toggleVoice() {
   recognition.onstart = () => {
     isRecording = true;
     document.getElementById('voiceBtn').classList.add('recording');
-    document.getElementById('voiceBtnIcon').textContent = '⏹';
+    document.getElementById('voiceBtnIcon').innerHTML = IC.stop(20);
     document.getElementById('voiceBtnText').textContent = '録音中... タップして停止';
     document.getElementById('voiceTranscript').textContent = '聞き取り中...';
   };
 
   recognition.onresult = (e) => {
-    let transcript = '';
-    for (let i = e.resultIndex; i < e.results.length; i++) {
-      transcript += e.results[i][0].transcript;
-    }
-    document.getElementById('voiceTranscript').textContent = transcript;
-    if (e.results[e.results.length - 1].isFinal) {
-      document.getElementById('inputText').value = transcript;
-    }
+    let t = '';
+    for (let i = e.resultIndex; i < e.results.length; i++) t += e.results[i][0].transcript;
+    document.getElementById('voiceTranscript').textContent = t;
+    if (e.results[e.results.length - 1].isFinal) document.getElementById('inputText').value = t;
   };
 
   recognition.onend = () => {
     isRecording = false;
     document.getElementById('voiceBtn').classList.remove('recording');
-    document.getElementById('voiceBtnIcon').textContent = '🎤';
+    document.getElementById('voiceBtnIcon').innerHTML = IC.mic(20);
     document.getElementById('voiceBtnText').textContent = 'マイクを押して話す';
   };
 
@@ -612,7 +758,6 @@ const samples = [
   '自立支援医療費の支給認定申請のご案内です。',
 ];
 
-const sampleList = document.getElementById('sampleList');
 samples.forEach(s => {
   const chip = document.createElement('button');
   chip.className = 'history-chip';
@@ -620,37 +765,29 @@ samples.forEach(s => {
   chip.title = s;
   chip.onclick = () => {
     document.getElementById('inputText').value = s;
-    // テキストタブに切り替え
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     document.querySelectorAll('.tab-btn')[0].classList.add('active');
     document.getElementById('textAreaWrap').classList.remove('hidden');
     document.getElementById('voiceArea').classList.remove('active');
   };
-  sampleList.appendChild(chip);
+  document.getElementById('sampleList').appendChild(chip);
 });
 
 // ---- AI変換 ----
 async function sendToAI() {
   const text = document.getElementById('inputText').value.trim()
     || document.getElementById('voiceTranscript').textContent.trim();
-
-  if (!text || text === 'ここに音声が表示されます' || text === '聞き取り中...') {
-    alert('テキストを入力してください');
-    return;
-  }
-  if (!apiKey) {
-    alert('APIキーを設定してください');
-    return;
-  }
+  if (!text || text === 'ここに音声が表示されます' || text === '聞き取り中...') { alert('テキストを入力してください'); return; }
+  if (!apiKey) { alert('APIキーを設定してください'); return; }
 
   const sendBtn = document.getElementById('sendBtn');
   sendBtn.disabled = true;
   sendBtn.textContent = '変換中...';
 
-  // 空状態を消す
+  document.getElementById('questionNotice').classList.remove('visible');
   document.getElementById('emptyState').style.display = 'none';
+  switchToUserMode();
 
-  // ローディング表示
   const loadingEl = document.createElement('div');
   loadingEl.className = 'loading-dots';
   loadingEl.innerHTML = '<span></span><span></span><span></span>';
@@ -683,21 +820,17 @@ async function sendToAI() {
         messages: [{ role: 'user', content: text }]
       })
     });
-
     const data = await response.json();
     loadingEl.remove();
-
     if (data.error) throw new Error(data.error.message);
-
-    const easyText = data.content[0].text;
-    renderResult(text, easyText);
-
+    renderResult(text, data.content[0].text);
   } catch (err) {
     loadingEl.remove();
-    const errEl = document.createElement('div');
-    errEl.style.cssText = 'color:#c0392b;font-size:0.85rem;padding:10px;background:#fdf2f2;border-radius:8px;';
-    errEl.textContent = 'エラー: ' + err.message;
-    document.getElementById('resultArea').appendChild(errEl);
+    switchToStaffMode(null);
+    const el = document.createElement('div');
+    el.style.cssText = 'color:#c0392b;font-size:0.85rem;padding:10px;background:#fdf2f2;border-radius:8px;';
+    el.textContent = 'エラー: ' + err.message;
+    document.getElementById('resultArea').appendChild(el);
   }
 
   sendBtn.disabled = false;
@@ -705,7 +838,6 @@ async function sendToAI() {
 }
 
 function renderResult(original, easy) {
-  const resultArea = document.getElementById('resultArea');
   const block = document.createElement('div');
   block.className = 'result-block';
   block.innerHTML = `
@@ -714,39 +846,39 @@ function renderResult(original, easy) {
       ${escapeHtml(original)}
     </div>
     <div class="easy-box">
-      <div class="label-small">✨ やさしい言葉</div>
+      <div class="label-small">${IC.star(14)} やさしい言葉</div>
       <div class="easy-text">${formatText(easy)}</div>
     </div>
     <div class="confirm-row">
       <span class="confirm-label">内容は伝わりましたか？</span>
-      <button class="btn-retry" onclick="markRetry(this)">🔄 もう一度</button>
-      <button class="btn-ok" onclick="markOk(this)">✅ わかった</button>
+      <button class="btn-retry" onclick="markRetry(this)">${IC.refresh(16)} もう一度</button>
+      <button class="btn-ok" onclick="markOk(this)">${IC.check(16)} わかった</button>
     </div>
   `;
-  resultArea.appendChild(block);
+  document.getElementById('resultArea').appendChild(block);
   block.scrollIntoView({ behavior: 'smooth', block: 'end' });
 }
 
 function markOk(btn) {
-  const row = btn.closest('.confirm-row');
-  row.innerHTML = '<span class="confirmed-badge">✅ 確認しました</span>';
+  btn.closest('.confirm-row').innerHTML = `<span class="confirmed-badge">${IC.check(14)} 確認しました</span>`;
+  const qa = document.getElementById('questionArea');
+  qa.classList.add('visible');
+  document.getElementById('questionText').focus();
+  qa.scrollIntoView({ behavior: 'smooth', block: 'end' });
 }
 
 function markRetry(btn) {
-  const block = btn.closest('.result-block');
-  block.style.opacity = '0.4';
-  // 職員側にフォーカス
-  document.getElementById('inputText').focus();
+  btn.closest('.result-block').style.opacity = '0.4';
+  switchToStaffMode(null);
   document.getElementById('inputText').select();
 }
 
-function formatText(text) {
-  return escapeHtml(text).replace(/\n/g, '<br>');
+function submitQuestion() {
+  switchToStaffMode(document.getElementById('questionText').value.trim() || null);
 }
 
-function escapeHtml(str) {
-  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
+function formatText(t) { return escapeHtml(t).replace(/\n/g, '<br>'); }
+function escapeHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 </script>
 </body>
 </html>
