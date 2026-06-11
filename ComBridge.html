@@ -35,32 +35,46 @@
     flex-direction: column;
   }
 
-  .icon-svg {
-    display: inline-block;
-    vertical-align: middle;
-    flex-shrink: 0;
-  }
+  .icon-svg { display: inline-block; vertical-align: middle; flex-shrink: 0; }
 
+  /* ---- ヘッダー ---- */
   header {
     background: #a8c5a0;
     color: var(--text);
-    padding: 14px 24px;
+    padding: 14px 16px;
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.15);
     transition: background 0.3s;
   }
 
   header.user-mode { background: #f5e6a3; }
-  header h1 { font-size: 1.1rem; font-weight: 500; letter-spacing: 0.03em; }
+  header h1 { font-size: 1.1rem; font-weight: 500; letter-spacing: 0.03em; flex: 1; }
+
+  .mode-toggle-btn {
+    padding: 4px 10px;
+    border: 1.5px solid rgba(255,255,255,0.55);
+    border-radius: 20px;
+    background: rgba(255,255,255,0.25);
+    color: var(--text);
+    font-size: 0.75rem;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.18s;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+  }
+  .mode-toggle-btn:hover { background: rgba(255,255,255,0.42); }
 
   .mode-label {
-    margin-left: auto;
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     font-weight: 700;
     background: rgba(255,255,255,0.55);
-    padding: 3px 11px;
+    padding: 3px 10px;
     border-radius: 20px;
     white-space: nowrap;
     display: flex;
@@ -68,6 +82,33 @@
     gap: 5px;
   }
 
+  /* ---- ツールバー（リセット） ---- */
+  .toolbar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 6px 16px;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .reset-btn {
+    padding: 5px 12px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    background: white;
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.18s;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .reset-btn:hover { border-color: #c0392b; color: #c0392b; }
+
+  /* ---- コンテナ ---- */
   .container {
     display: grid;
     grid-template-columns: 1fr;
@@ -123,6 +164,7 @@
   .user-panel .panel-header { background: #eafaf1; }
   .user-panel .panel-header .icon { color: var(--accent); }
 
+  /* ---- 利用者からの質問通知 ---- */
   .question-notice {
     background: #f0f4f8;
     border-left: 3px solid var(--primary-light);
@@ -133,9 +175,7 @@
     line-height: 1.6;
     display: none;
   }
-
   .question-notice.visible { display: block; }
-
   .question-notice .notice-label {
     font-size: 0.72rem;
     font-weight: 700;
@@ -147,14 +187,7 @@
     gap: 4px;
   }
 
-  .input-area {
-    padding: 14px;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
+  .input-area { padding: 14px; flex: 1; display: flex; flex-direction: column; gap: 10px; }
   .tab-row { display: flex; gap: 6px; }
 
   .tab-btn {
@@ -174,7 +207,6 @@
     justify-content: center;
     gap: 6px;
   }
-
   .tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
 
   textarea {
@@ -191,7 +223,6 @@
     color: var(--text);
     transition: border-color 0.18s;
   }
-
   textarea:focus { outline: none; border-color: var(--primary-light); }
   textarea::placeholder { color: #aab8c5; }
 
@@ -215,7 +246,6 @@
     gap: 8px;
     font-weight: 500;
   }
-
   .voice-btn:hover { background: var(--primary-light); }
   .voice-btn.recording { background: #c0392b; animation: pulse 1.2s infinite; }
 
@@ -247,18 +277,10 @@
     transition: all 0.18s;
     letter-spacing: 0.04em;
   }
-
   .send-btn:hover { background: var(--accent-light); }
   .send-btn:disabled { background: var(--border); color: var(--text-muted); cursor: not-allowed; }
 
-  .result-area {
-    padding: 16px;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    overflow-y: auto;
-  }
+  .result-area { padding: 16px; flex: 1; display: flex; flex-direction: column; gap: 14px; overflow-y: auto; }
 
   .result-empty {
     flex: 1;
@@ -271,16 +293,10 @@
     padding: 40px 20px;
     text-align: center;
   }
-
   .result-empty .big-icon { opacity: 0.3; }
   .result-empty p { font-size: 0.85rem; line-height: 1.7; }
 
-  .result-block {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    animation: fadeIn 0.35s ease;
-  }
+  .result-block { display: flex; flex-direction: column; gap: 10px; animation: fadeIn 0.35s ease; }
 
   @keyframes fadeIn {
     from { opacity: 0; transform: translateY(8px); }
@@ -306,27 +322,13 @@
     align-items: center;
     gap: 4px;
   }
-
   .original-box .label-small { color: #8fa8be; }
 
-  .easy-box {
-    background: var(--easy-bg);
-    border: 1.5px solid var(--easy-border);
-    border-radius: 12px;
-    padding: 16px;
-  }
-
+  .easy-box { background: var(--easy-bg); border: 1.5px solid var(--easy-border); border-radius: 12px; padding: 16px; }
   .easy-box .label-small { color: var(--accent); margin-bottom: 8px; }
-
-  .easy-text {
-    font-size: 1.15rem;
-    line-height: 1.85;
-    color: var(--text);
-    font-weight: 400;
-  }
+  .easy-text { font-size: 1.15rem; line-height: 1.85; color: var(--text); font-weight: 400; }
 
   .confirm-row { display: flex; gap: 8px; align-items: center; }
-
   .confirm-label { font-size: 0.8rem; color: var(--text-muted); flex: 1; }
 
   .btn-ok {
@@ -344,7 +346,6 @@
     align-items: center;
     gap: 5px;
   }
-
   .btn-ok:hover { background: var(--accent-light); }
 
   .btn-retry {
@@ -361,7 +362,6 @@
     align-items: center;
     gap: 5px;
   }
-
   .btn-retry:hover { border-color: var(--primary-light); color: var(--primary); }
 
   .confirmed-badge {
@@ -386,9 +386,7 @@
     background: var(--surface2);
     animation: fadeIn 0.3s ease;
   }
-
   .question-area.visible { display: flex; }
-
   .question-area .question-label {
     font-size: 0.85rem;
     color: var(--text-muted);
@@ -397,7 +395,6 @@
     align-items: center;
     gap: 6px;
   }
-
   .question-area textarea { min-height: 80px; font-size: 1rem; }
 
   .question-send-btn {
@@ -413,18 +410,10 @@
     transition: all 0.18s;
     letter-spacing: 0.04em;
   }
-
   .question-send-btn:hover { background: var(--primary-light); }
 
   .loading-dots { display: flex; gap: 5px; align-items: center; padding: 8px 0; }
-
-  .loading-dots span {
-    width: 7px; height: 7px;
-    border-radius: 50%;
-    background: var(--accent);
-    animation: dot 1.2s infinite;
-  }
-
+  .loading-dots span { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); animation: dot 1.2s infinite; }
   .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
   .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
 
@@ -433,6 +422,7 @@
     40% { opacity: 1; transform: scale(1); }
   }
 
+  /* ---- APIキーバー ---- */
   .apikey-bar {
     background: #fff8e1;
     border-bottom: 1.5px solid #ffe082;
@@ -443,7 +433,6 @@
     font-size: 0.82rem;
     color: #7d6608;
   }
-
   .apikey-input {
     flex: 1;
     padding: 6px 10px;
@@ -454,7 +443,6 @@
     background: white;
     max-width: 340px;
   }
-
   .apikey-save {
     padding: 6px 14px;
     border: none;
@@ -467,41 +455,99 @@
     cursor: pointer;
   }
 
-  .history-panel {
+  /* ---- サンプル文例 ---- */
+  .history-panel { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); padding: 14px 16px; grid-column: 1 / -1; }
+  .history-title { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; display: flex; align-items: center; gap: 5px; }
+  .history-list { display: flex; flex-wrap: wrap; gap: 7px; }
+  .history-chip { padding: 5px 12px; border-radius: 20px; background: var(--surface2); border: 1px solid var(--border); font-size: 0.78rem; color: var(--text-muted); cursor: pointer; transition: all 0.15s; white-space: nowrap; }
+  .history-chip:hover { background: var(--primary); color: white; border-color: var(--primary); }
+
+  /* ---- 会話履歴パネル ---- */
+  .conv-history {
     background: var(--surface);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
-    padding: 14px 16px;
-    grid-column: 1 / -1;
+    overflow: hidden;
   }
 
-  .history-title {
-    font-size: 0.75rem;
+  .conv-history-header {
+    padding: 10px 14px;
+    background: var(--surface2);
+    border-bottom: 1.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .conv-history-title {
+    font-size: 0.72rem;
     font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--text-muted);
-    margin-bottom: 10px;
+    flex: 1;
     display: flex;
     align-items: center;
     gap: 5px;
   }
 
-  .history-list { display: flex; flex-wrap: wrap; gap: 7px; }
-
-  .history-chip {
-    padding: 5px 12px;
-    border-radius: 20px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    font-size: 0.78rem;
+  .conv-download-btn {
+    padding: 4px 10px;
+    border: 1.5px solid var(--border);
+    border-radius: 7px;
+    background: white;
     color: var(--text-muted);
+    font-size: 0.75rem;
+    font-family: 'Noto Sans JP', sans-serif;
     cursor: pointer;
     transition: all 0.15s;
-    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .conv-download-btn:hover { border-color: var(--primary-light); color: var(--primary); }
+  .conv-download-btn:disabled { opacity: 0.4; cursor: not-allowed; pointer-events: none; }
+
+  .conv-entries {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-height: 260px;
+    overflow-y: auto;
+    padding: 10px 14px;
   }
 
-  .history-chip:hover { background: var(--primary); color: white; border-color: var(--primary); }
+  .conv-empty { padding: 16px; text-align: center; color: var(--text-muted); font-size: 0.82rem; }
+
+  .conv-entry { display: flex; flex-direction: column; gap: 3px; animation: fadeIn 0.25s ease; }
+
+  .conv-entry-meta { display: flex; align-items: center; gap: 6px; }
+
+  .conv-entry-role {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 1px 7px;
+    border-radius: 10px;
+  }
+  .conv-entry-role.staff   { background: #dbeafe; color: #1e40af; }
+  .conv-entry-role.ai      { background: var(--easy-bg); color: var(--accent); }
+  .conv-entry-role.user-q  { background: #fef9c3; color: #854d0e; }
+  .conv-entry-role.user-ok { background: #dcfce7; color: #166534; }
+
+  .conv-entry-time { font-size: 0.68rem; color: var(--text-muted); }
+
+  .conv-entry-text {
+    font-size: 0.82rem;
+    color: var(--text);
+    line-height: 1.55;
+    padding: 6px 10px;
+    background: var(--surface2);
+    border-radius: 6px;
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
 </style>
 </head>
 <body>
@@ -513,6 +559,12 @@
     </svg>
   </span>
   <h1>ComBridge</h1>
+  <button class="mode-toggle-btn" id="toggleBtn" onclick="manualToggleMode()">
+    <svg class="icon-svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="M16 21l4-4-4-4"/><path d="M20 17H4"/>
+    </svg>
+    利用者へ
+  </button>
   <span class="mode-label" id="modeLabel">
     <svg class="icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="8" r="4"/>
@@ -530,6 +582,15 @@
   <input class="apikey-input" type="password" id="apikeyInput" placeholder="sk-ant-..." />
   <button class="apikey-save" onclick="saveApiKey()">保存</button>
   <span id="apikeyStatus"></span>
+</div>
+
+<div class="toolbar">
+  <button class="reset-btn" onclick="resetAll()">
+    <svg class="icon-svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/>
+    </svg>
+    最初に戻る
+  </button>
 </div>
 
 <div class="container">
@@ -612,9 +673,7 @@
     <div class="panel-header">
       <span class="icon">
         <svg class="icon-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="10"/>
-          <circle cx="12" cy="10" r="3"/>
-          <path d="M7 20.662V19a5 5 0 0 1 10 0v1.662"/>
+          <circle cx="12" cy="12" r="10"/><circle cx="12" cy="10" r="3"/><path d="M7 20.662V19a5 5 0 0 1 10 0v1.662"/>
         </svg>
       </span>
       <span class="label">利用者</span>
@@ -642,19 +701,45 @@
     </div>
   </div>
 
+  <!-- 会話履歴 -->
+  <div class="conv-history">
+    <div class="conv-history-header">
+      <div class="conv-history-title">
+        <svg class="icon-svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+        </svg>
+        会話履歴
+      </div>
+      <button class="conv-download-btn" id="downloadBtn" onclick="downloadHistory()" disabled>
+        <svg class="icon-svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        テキストで保存
+      </button>
+    </div>
+    <div class="conv-entries" id="convEntries">
+      <div class="conv-empty" id="convEmpty">まだ会話がありません</div>
+    </div>
+  </div>
+
 </div>
 
 <script>
-// ---- SVGアイコン関数（JSから動的に使用） ----
+// ---- SVGアイコン関数 ----
 const IC = {
-  mic:     (s=20) => `<svg class="icon-svg" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>`,
-  stop:    (s=20) => `<svg class="icon-svg" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" fill="currentColor" stroke="currentColor"/></svg>`,
-  user:    (s=16) => `<svg class="icon-svg" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="8" r="4"/></svg>`,
-  userCir: (s=16) => `<svg class="icon-svg" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="10" r="3"/><path d="M7 20.662V19a5 5 0 0 1 10 0v1.662"/></svg>`,
-  check:   (s=16) => `<svg class="icon-svg" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></svg>`,
-  refresh: (s=16) => `<svg class="icon-svg" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>`,
-  star:    (s=14) => `<svg class="icon-svg" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
+  mic:      (s=20) => `<svg class="icon-svg" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>`,
+  stop:     (s=20) => `<svg class="icon-svg" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" fill="currentColor" stroke="currentColor"/></svg>`,
+  user:     (s=16) => `<svg class="icon-svg" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="8" r="4"/></svg>`,
+  userCir:  (s=16) => `<svg class="icon-svg" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="10" r="3"/><path d="M7 20.662V19a5 5 0 0 1 10 0v1.662"/></svg>`,
+  check:    (s=16) => `<svg class="icon-svg" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></svg>`,
+  refresh:  (s=16) => `<svg class="icon-svg" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>`,
+  star:     (s=14) => `<svg class="icon-svg" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
+  swap:     (s=13) => `<svg class="icon-svg" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="M16 21l4-4-4-4"/><path d="M20 17H4"/></svg>`,
 };
+
+const SWAP_SVG = IC.swap(13);
 
 // ---- APIキー管理 ----
 let apiKey = localStorage.getItem('madoguchi_apikey') || '';
@@ -670,27 +755,96 @@ function saveApiKey() {
   setTimeout(() => document.getElementById('apikeyStatus').innerHTML = '', 2000);
 }
 
+// ---- 会話履歴 ----
+let conversationLog = [];
+const ROLE_LABELS = { staff: '職員', ai: 'AI変換', 'user-ok': '利用者確認', 'user-q': '利用者質問' };
+
+function logEntry(role, content) {
+  const now = new Date();
+  const time = [now.getHours(), now.getMinutes(), now.getSeconds()]
+    .map(n => String(n).padStart(2, '0')).join(':');
+  const entry = { time, role, content };
+  conversationLog.push(entry);
+  const emptyEl = document.getElementById('convEmpty');
+  if (emptyEl) emptyEl.style.display = 'none';
+  const el = document.createElement('div');
+  el.className = 'conv-entry';
+  el.innerHTML = `
+    <div class="conv-entry-meta">
+      <span class="conv-entry-role ${role}">${ROLE_LABELS[role]}</span>
+      <span class="conv-entry-time">${time}</span>
+    </div>
+    <div class="conv-entry-text">${escapeHtml(content)}</div>
+  `;
+  const entries = document.getElementById('convEntries');
+  entries.appendChild(el);
+  entries.scrollTop = entries.scrollHeight;
+  document.getElementById('downloadBtn').disabled = false;
+}
+
+function downloadHistory() {
+  if (!conversationLog.length) return;
+  const d = new Date();
+  const dateStr = d.toLocaleDateString('ja-JP', { year:'numeric', month:'2-digit', day:'2-digit' });
+  let txt = `ComBridge 会話記録\n日付：${dateStr}\n${'='.repeat(40)}\n\n`;
+  conversationLog.forEach(e => { txt += `[${e.time}] ${ROLE_LABELS[e.role]}\n${e.content}\n\n`; });
+  const a = Object.assign(document.createElement('a'), {
+    href: URL.createObjectURL(new Blob([txt], { type: 'text/plain;charset=utf-8' })),
+    download: `ComBridge_${d.toISOString().slice(0,10)}.txt`
+  });
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(a.href);
+}
+
+// ---- リセット ----
+function resetAll() {
+  if (!confirm('会話をリセットしますか？')) return;
+  conversationLog = [];
+  document.querySelectorAll('#resultArea .result-block, #resultArea .loading-dots').forEach(el => el.remove());
+  const es = document.getElementById('emptyState');
+  if (es) es.style.display = '';
+  document.querySelectorAll('#convEntries .conv-entry').forEach(el => el.remove());
+  document.getElementById('convEmpty').style.display = '';
+  document.getElementById('downloadBtn').disabled = true;
+  document.getElementById('voiceTranscript').textContent = 'ここに音声が表示されます';
+  switchToStaffMode(null);
+}
+
 // ---- モード切替 ----
+let currentMode = 'staff';
+
 function switchToUserMode() {
+  currentMode = 'user';
   document.getElementById('header').classList.add('user-mode');
   document.getElementById('modeLabel').innerHTML = IC.userCir(16) + ' 利用者モード';
+  document.getElementById('toggleBtn').innerHTML = SWAP_SVG + ' 職員へ';
   document.getElementById('staffPanel').classList.add('hidden');
   document.getElementById('userPanel').classList.remove('hidden');
 }
 
 function switchToStaffMode(question) {
+  currentMode = 'staff';
   document.getElementById('header').classList.remove('user-mode');
   document.getElementById('modeLabel').innerHTML = IC.user(16) + ' 職員モード';
+  document.getElementById('toggleBtn').innerHTML = SWAP_SVG + ' 利用者へ';
   document.getElementById('userPanel').classList.add('hidden');
   document.getElementById('staffPanel').classList.remove('hidden');
   document.getElementById('questionArea').classList.remove('visible');
   document.getElementById('questionText').value = '';
+  document.getElementById('questionNotice').classList.remove('visible');
   if (question) {
     document.getElementById('questionNoticeText').textContent = question;
     document.getElementById('questionNotice').classList.add('visible');
   }
   document.getElementById('inputText').value = '';
   document.getElementById('inputText').focus();
+}
+
+function manualToggleMode() {
+  if (currentMode === 'staff') switchToUserMode();
+  else switchToStaffMode(null);
 }
 
 // ---- タブ切替 ----
@@ -716,13 +870,11 @@ function toggleVoice() {
     return;
   }
   if (isRecording) { recognition.stop(); return; }
-
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   recognition = new SR();
   recognition.lang = 'ja-JP';
   recognition.continuous = false;
   recognition.interimResults = true;
-
   recognition.onstart = () => {
     isRecording = true;
     document.getElementById('voiceBtn').classList.add('recording');
@@ -730,21 +882,18 @@ function toggleVoice() {
     document.getElementById('voiceBtnText').textContent = '録音中... タップして停止';
     document.getElementById('voiceTranscript').textContent = '聞き取り中...';
   };
-
   recognition.onresult = (e) => {
     let t = '';
     for (let i = e.resultIndex; i < e.results.length; i++) t += e.results[i][0].transcript;
     document.getElementById('voiceTranscript').textContent = t;
     if (e.results[e.results.length - 1].isFinal) document.getElementById('inputText').value = t;
   };
-
   recognition.onend = () => {
     isRecording = false;
     document.getElementById('voiceBtn').classList.remove('recording');
     document.getElementById('voiceBtnIcon').innerHTML = IC.mic(20);
     document.getElementById('voiceBtnText').textContent = 'マイクを押して話す';
   };
-
   recognition.start();
 }
 
@@ -757,7 +906,6 @@ const samples = [
   '特別障害者手当の受給資格を確認します。',
   '自立支援医療費の支給認定申請のご案内です。',
 ];
-
 samples.forEach(s => {
   const chip = document.createElement('button');
   chip.className = 'history-chip';
@@ -783,6 +931,8 @@ async function sendToAI() {
   const sendBtn = document.getElementById('sendBtn');
   sendBtn.disabled = true;
   sendBtn.textContent = '変換中...';
+
+  logEntry('staff', text);
 
   document.getElementById('questionNotice').classList.remove('visible');
   document.getElementById('emptyState').style.display = 'none';
@@ -857,10 +1007,12 @@ function renderResult(original, easy) {
   `;
   document.getElementById('resultArea').appendChild(block);
   block.scrollIntoView({ behavior: 'smooth', block: 'end' });
+  logEntry('ai', easy);
 }
 
 function markOk(btn) {
   btn.closest('.confirm-row').innerHTML = `<span class="confirmed-badge">${IC.check(14)} 確認しました</span>`;
+  logEntry('user-ok', '内容を確認しました');
   const qa = document.getElementById('questionArea');
   qa.classList.add('visible');
   document.getElementById('questionText').focus();
@@ -874,7 +1026,9 @@ function markRetry(btn) {
 }
 
 function submitQuestion() {
-  switchToStaffMode(document.getElementById('questionText').value.trim() || null);
+  const q = document.getElementById('questionText').value.trim();
+  if (q) logEntry('user-q', q);
+  switchToStaffMode(q || null);
 }
 
 function formatText(t) { return escapeHtml(t).replace(/\n/g, '<br>'); }
